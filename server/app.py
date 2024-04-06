@@ -13,24 +13,24 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 
-@app.route("/")
-def index():
-    return "<h1>Pizza Restaurants</h1>"
+# @app.route("/")
+# def index():
+#     return "<h1>Pizza Restaurants</h1>"
 
 
-@app.route("/restaurants")
-def restaurants():
-    pass
+# @app.route("/restaurants")
+# def restaurants():
+#     pass
 
 
-@app.route("/restaurants/<Integer:id>", methods=["GET", "DELETE"])
-def restaurants_by_id(id):
-    pass
+# @app.route("/restaurants/<Integer:id>", methods=["GET", "DELETE"])
+# def restaurants_by_id(id):
+#     pass
 
 
-@app.route("/pizzas", methods=["GET", "POST"])
-def pizzas():
-    pass
+# @app.route("/pizzas", methods=["GET", "POST"])
+# def pizzas():
+#     pass
 
 
 if __name__ == "__main__":

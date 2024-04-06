@@ -17,33 +17,25 @@ class Restaurant(db.Model, SerializerMixin):
     __tablename__ = "restaurants"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
-
-    @validates("name")
-    def validates_name(self, key, name):
-        if len(name.strip()) == 0:
-            raise ValueError("Restaurant name cannot be empty.")
-        if len(name.strip()) > 50:
-            raise ValueError("Restaurant name must be less that 50 words.")
-        return name
+    
+    # Define relationship with RestaurantPizza
+    restaurant_pizzas = db.relationship('RestaurantPizza', back_populates='restaurant', lazy=True)
 
     def __repr__(self):
         return f"<Restaurant {self.id}, {self.name}>"
-
-
-class Pizza(db.Model, SerializerMixin):
-    __tablename__ = "pizzas"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    flavor = db.Column(db.String)
-
-    def __repr__(self):
-        return f"<Pizza {self.id}, {self.name}, {self.flavor}>"
-
 
 class RestaurantPizza(db.Model, SerializerMixin):
     __tablename__ = "restaurantpizza"
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Integer)
+
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'))
+
+    # Define relationship with Restaurant
+    restaurant = db.relationship('Restaurant', back_populates='restaurant_pizzas')
+    # Define relationship with Pizza
+    pizza = db.relationship('Pizza', back_populates='restaurant_pizzas')
 
     @validates("price")
     def validate_price(self, key, price):
@@ -51,5 +43,15 @@ class RestaurantPizza(db.Model, SerializerMixin):
             raise ValueError("Price must be between 1 and 30.")
         return price
 
-    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.id"))
-    pizza_id = db.Column(db.Integer, db.ForeignKey("pizzas.id"))
+class Pizza(db.Model, SerializerMixin):
+    __tablename__ = "pizzas"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    flavor = db.Column(db.String(50))
+
+    # Define relationship with RestaurantPizza
+    restaurant_pizzas = db.relationship('RestaurantPizza', back_populates='pizza', lazy=True)
+
+    def __repr__(self):
+        return f"<Pizza {self.id}, {self.name}, {self.flavor}>"
+
