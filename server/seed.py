@@ -8,37 +8,27 @@ with app.app_context():
     RestaurantPizza.query.delete()
 
     # Add restaurants
-    Bella_Italia_Trattoria = Restaurant(name="Bella Italia Trattoria")
-    The_Rusty_Spoon = Restaurant(name="The Rusty Spoon")
-    Sakura_Sushi_Bar = Restaurant(name="Sakura Sushi Bar")
+    Dominion_Pizza = Restaurant(
+        name="Dominion Pizza", address="Good Italian, Ngong Road, 5th Avenue"
+    )
+    Pizza_Hut = Restaurant(
+        name="Pizza Hut", address="Westgate Mall, Mwanzi Road, Nrb 100"
+    )
 
     # Add pizzas
-    margherita = Pizza(name="margherita", flavor="mozzarella cheese")
-    pepperoni = Pizza(name="pepperoni", flavor="pepperoni slices")
-    hawaiian = Pizza(name="hawaiian", flavor="pineapple")
+    Cheese = Pizza(name="Cheese", ingredients="Dough, Tomato Sauce, Cheese")
+    Pepperoni = Pizza(
+        name="Pepperoni", ingredients="Dough, Tomato Sauce, Cheese, Pepperoni"
+    )
 
     # Add restaurantpizzas
-    rp1 = RestaurantPizza(price=25, restaurant=Bella_Italia_Trattoria, pizza=margherita)
-    rp2 = RestaurantPizza(price=28, restaurant=The_Rusty_Spoon, pizza=pepperoni)
-    rp3 = RestaurantPizza(price=26, restaurant=Sakura_Sushi_Bar, pizza=hawaiian)
+    rp1 = RestaurantPizza(price=25, restaurant=Dominion_Pizza, pizza=Cheese)
+    rp2 = RestaurantPizza(price=28, restaurant=Pizza_Hut, pizza=Pepperoni)
 
     # Append pizzas to restaurants
-    Bella_Italia_Trattoria.restaurant_pizzas.append(rp1)
-    The_Rusty_Spoon.restaurant_pizzas.append(rp2)
-    Sakura_Sushi_Bar.restaurant_pizzas.append(rp3)
+    Dominion_Pizza.restaurantpizza.append(rp1)
+    Pizza_Hut.restaurantpizza.append(rp2)
 
     # Commit changes to the database
-    db.session.add_all(
-        [
-            Bella_Italia_Trattoria,
-            The_Rusty_Spoon,
-            Sakura_Sushi_Bar,
-            margherita,
-            pepperoni,
-            hawaiian,
-            rp1,
-            rp2,
-            rp3,
-        ]
-    )
+    db.session.add_all([Dominion_Pizza, Pizza_Hut, Cheese, Pepperoni, rp1, rp2])
     db.session.commit()
